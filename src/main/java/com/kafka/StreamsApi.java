@@ -23,18 +23,24 @@ class StreamsApi {
         // create a new streambuilder object
         StreamsBuilder builder = new StreamsBuilder();
 
-        //build topology
+        //open the stream for a topic
         KStream<Integer, String> source = builder.stream("test");
 
-        source.filter((key, value) -> value.replaceAll())
-        .peek((key, value) -> System.out.println(("processed " + key + " and " + value)));
+        //build topology
+        source.peek((key, value) -> System.out.println(("incoming message key: " + key + " and value: " + value)))
+        .mapValues((key, value) -> value.toUpperCase())
+        .peek((key, value) -> System.out.println("Proccesed message key: " + key + " and value: " + value));
+        
+        
         
 
         //create a kafkastreams application, pass in the streamsbuilder.build and properties
         KafkaStreams streams = new KafkaStreams(builder.build(), properties);
         
         //start the kafkastreams application
+        System.out.println("starting stream app");
         streams.start();
+        
 
 
         
