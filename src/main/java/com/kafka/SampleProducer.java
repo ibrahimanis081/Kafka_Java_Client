@@ -33,7 +33,9 @@ class SampleProducer {
             Thread.sleep(500L);
             } 
            
+            kafkaProducer.flush();
             kafkaProducer.close();
             System.out.println("Finished sending messages");
         }
     }
+    
